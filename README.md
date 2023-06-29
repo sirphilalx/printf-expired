@@ -27,7 +27,7 @@ We have been paired in twos to work on this project.
     - All your header files should be include guarded
     - Note that we will not provide the _putchar function for this project
 
-## GitHub
+## GitHub*
 There should be one project repository per group. The other members do not fork or clone the project to ensure only one of the team has the repository in their github account otherwise you risk scoring 0%
 
 ## Authorized functions and macros
