@@ -21,6 +21,7 @@ int _printf(const char *format, ...)
 		{'%', print_percent},
 		{'d', print_num},
 		{'i', print_num},
+		{'b', print_binary},
 		{0, '\0'}
 	};
 
