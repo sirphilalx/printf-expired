@@ -13,7 +13,8 @@ int _printf(const char *format, ...)
 {
 	va_list args;
 	int len = 0;
-	int i = 0;
+	int pos = 0;
+	char buffer[BUFFER_SIZE] = {0};
 
 	format_t formats[] = {
 		{'c', print_char},
@@ -26,35 +27,49 @@ int _printf(const char *format, ...)
 		{'o', print_octal},
 		{'x', print_hex_lower},
 		{'X', print_hex_upper},
-		{0, '\0'}
+		{'\0', '\0'}
 	};
 
 	va_start(args, format);
 
-	while (format && format[i])
+	while (format && format[pos])
 	{
-		if (format[i] == '%')
+		if (format[pos] == '%')
 		{
 			int j = 0;
+			specifierFound = 0;
+
+			pos++;
 
 			while (formats[j].specifier)
 			{
-				if (formats[j].specifier == format[i + 1])
+				if (format[pos] == *(handlers[j].specifier))
 				{
-					len += formats[j].print_func(args);
-					i++;
+					len += formats[j].print_func(args, buffer, &pos);
+					found = 1;
 					break;
 				}
 				j++;
 			}
+			if (!found && format[pos])
+			{
+				len += write(1, &format[pos - 1], 2);
+				pos++;
+			}
 		}
 		else
 		{
-			len += write(1, &format[i], 1);
+			len += write(1, &format[pos], 1);
+			pos++;
 		}
-		i++;
+		if (len >= BUFFER_SIZE)
+		{
+			len -= write(1, buffer, len);
+			len = 0;
+		}
 	}
 
+	len += write(1, buffer, len);
 	va_end(args);
 
 	return (len);

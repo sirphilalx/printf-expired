@@ -21,7 +21,7 @@ void print_binary_recursive(unsigned int num, int *len)
  * @args: va_list containing the unsigned int to convert
  * Return: Number of characters printed
  */
-int print_binary(va_list args)
+int print_binary(va_list args, char *buffer, int *pos)
 {
     unsigned int num = va_arg(args, unsigned int);
     int len = 0;
