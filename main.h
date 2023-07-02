@@ -1,35 +1,33 @@
 #ifndef MAIN_H
 #define MAIN_H
 
-#include <stdarg.h>
-#include <unistd.h>
-#include <stdlib.h>
+#define BUFFER_SIZE 1024
 
-#define BUFFER 1024
+#include <stdarg.h>
+#include <stdlib.h>
+#include <unistd.h>
 
 /**
- * struct format_t - Struct format
- *
- * @specifier: The format specifier
- * @print_func: The corresponding print function
+ * struct print_handler - Struct to hold format specifier and corresponding function pointer.
+ * @specifier: The format specifier character.
+ * @func: The corresponding function pointer to handle the specifier.
  */
-
-typedef struct format_t
+typedef struct print_handler
 {
-	char specifier;
-	int (*print_func)(va_list, char *buffer, int *pos);
-} format_t;
+    char specifier;
+    int (*func)(va_list args, char *buffer, int len);
+} print_handler_t;
 
 int _printf(const char *format, ...);
-int print_char(va_list args, char *buffer, int *pos);
-int print_string(va_list args, char *buffer, int *pos);
-int print_percent(va_list args, char *buffer, int *pos);
-int print_num(va_list args, char *buffer, int *pos);
-int _puts(char *str, char *buffer, int *pos);
-int print_binary(va_list args, char *buffer, int *pos);
-int print_unsigned_num(va_list args, char *buffer, int *pos);
-int print_octal(va_list args, char *buffer, int *pos);
-int print_hex_lower(va_list args, char *buffer, int *pos);
-int print_hex_upper(va_list args, char *buffer, int *pos);
+int _putchar(char c);
+int print_char(va_list args, char *buffer, int len);
+int print_string(va_list args, char *buffer, int len);
+int print_integer(va_list args, char *buffer, int len);
+int print_unsigned(va_list args, char *buffer, int len);
+int print_octal(va_list args, char *buffer, int len);
+int print_hex_lower(va_list args, char *buffer, int len);
+int print_hex_upper(va_list args, char *buffer, int len);
+int print_binary(va_list args, char *buffer, int len);
+int print_string_custom(va_list args, char *buffer, int len);
 
 #endif /* MAIN_H */
