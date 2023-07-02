@@ -29,5 +29,6 @@ int print_hex_lower(va_list args, char *buffer, int len);
 int print_hex_upper(va_list args, char *buffer, int len);
 int print_binary(va_list args, char *buffer, int len);
 int print_string_custom(va_list args, char *buffer, int len);
+int print_pointer(va_list args, char *buffer, int len);
 
 #endif /* MAIN_H */

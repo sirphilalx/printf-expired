@@ -25,6 +25,7 @@ int _printf(const char *format, ...)
 		{'X', print_hex_upper},
 		{'b', print_binary},
 		{'S', print_string_custom},
+		{'p', print_pointer},
 		{'\0', NULL}};
 
 	va_start(args, format);
