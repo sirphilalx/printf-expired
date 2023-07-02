@@ -32,7 +32,7 @@ int print_pointer(va_list args, char *buffer, int len)
 			if (digit < 10)
 				buffer[len++] = '0' + digit;
 			else
-				buffer[len++] = 'a' + (digit - 10)
+				buffer[len++] = 'a' + (digit - 10);
 		}
 	}
 	return (len);
