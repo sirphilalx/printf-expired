@@ -12,21 +12,22 @@ int _printf(const char *format, ...)
 {
     va_list args;
     int len = 0;
-    int pos = 0;
     char buffer[BUFFER_SIZE] = {0};
-
-    format_t formats[] = {
+    int i, j;
+    print_handler_t handlers[] = {
         {'c', print_char},
         {'s', print_string},
-        {'%', print_percent},
-        {'d', print_num},
-        {'i', print_num},
-        {'b', print_binary},
-        {'u', print_unsigned_num},
+        {'d', print_integer},
+        {'i', print_integer},
+        {'u', print_unsigned},
         {'o', print_octal},
         {'x', print_hex_lower},
         {'X', print_hex_upper},
-        {'\0', '\0'}};
+        {'b', print_binary},
+        {'S', print_string_custom},
+        {'\0', NULL}};
+
+    va_start(args, format);
 
     for (i = 0; format[i]; i++)
     {
@@ -66,45 +67,12 @@ int _printf(const char *format, ...)
         }
     }
 
-    while (format && format[pos])
-    {
-        if (format[pos] == '%')
-        {
-            int j = 0;
-            specifierFound = 0;
-
-            pos++;
-
-            while (formats[j].specifier)
-            {
-                if (format[pos] == *(handlers[j].specifier))
-                {
-                    len += formats[j].print_func(args, buffer, &pos);
-                    found = 1;
-                    break;
-                }
-                j++;
-            }
-            if (!found && format[pos])
-            {
-                len += write(1, &format[pos - 1], 2);
-                pos++;
-            }
-        }
-        else
-        {
-            len += write(1, &format[pos], 1);
-            pos++;
-        }
-        if (len >= BUFFER_SIZE)
-        {
-            len -= write(1, buffer, len);
-            len = 0;
-        }
-    }
-
-    len += write(1, buffer, len);
     va_end(args);
 
-    return (len);
+    for (i = 0; buffer[i]; i++)
+    {
+        _putchar(buffer[i]);
+    }
+
+    return len;
 }
