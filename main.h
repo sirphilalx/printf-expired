@@ -14,8 +14,8 @@
  */
 typedef struct print_handler
 {
-    char specifier;
-    int (*func)(va_list args, char *buffer, int len);
+	char specifier;
+	int (*func)(va_list args, char *buffer, int len);
 } print_handler_t;
 
 int _printf(const char *format, ...);

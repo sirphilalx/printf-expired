@@ -1,31 +1,31 @@
 #include "main.h"
-#include <stdarg.h>
-#include <unistd.h>
 
 /**
- * print_string - Prints a string
- * @args: The va_list that contains the string argument
- * @buffer: The buffer to store the characters to be printed
- * @pos: A pointer to the current position in the buffer
+ * print_string - Print a string.
+ * @args: A va_list containing the string to print.
+ * @buffer: The output buffer to store the formatted string.
+ * @len: The current length of the output buffer.
  *
- * Return: The number of characters printed
+ * Return: The number of characters printed.
  */
-
-int print_string(va_list args char *buffer, int *pos)
+int print_string(va_list args, char *buffer, int len)
 {
 	char *str = va_arg(args, char *);
-	int len = 0;
+	int count = 0;
 
-	while (*str)
+	if (!str)
+		str = "(null)";
+
+	for (int i = 0; str[i] != '\0'; i++)
 	{
-		if (*pos == 1023)
+		buffer[len++] = str[i];
+		if (len == 1024)
 		{
-			write(1, buffer, *pos);
-			*pos = 0;
+			write(1, buffer, len);
+			len = 0;
 		}
-		buffer[(*pos)++] = *str++;
-		len++;
+		count++;
 	}
 
-	return (len);
+	return (count);
 }

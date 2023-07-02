@@ -1,37 +1,38 @@
 #include "main.h"
 
 /**
- * print_octal - prints an unsigned integer in octal format
- * @args: va_list containing the unsigned integer
+ * print_octal - Print an unsigned integer in octal format.
+ * @args: A va_list containing the unsigned integer to print.
+ * @buffer: The output buffer to store the formatted string.
+ * @len: The current length of the output buffer.
  *
- * Return: the number counted
+ * Return: The number of characters printed.
  */
 
-int print_octal(va_list args)
+int print_octal(va_list args, char *buffer, int len)
 {
-	unsigned int num = va_arg(args, unsigned int);
-	int len = 0;
-	char buffer[12];
+	unsigned int n = va_arg(args, unsigned int);
+	int i = 0, j;
+	char octal_digits[100];
 
-	if (num == 0)
+	if (n == 0)
 	{
-		len += write(1, "0", 1);
-	}
-	else
-	{
-		int i = 0;
-
-		while (num > 0)
-		{
-			buffer[i++] = (num % 8) + '0';
-			num /= 8;
-		}
-
-		while (i > 0)
-		{
-			len += write(1, &buffer[--i], 1);
-		}
+		buffer[len] = '0';
+		return (1);
 	}
 
-	return len;
+	/* Convert the unsigned integer to octal representation in reverse */
+	while (n != 0)
+	{
+		octal_digits[i++] = (n % 8) + '0';
+		n /= 8;
+	}
+
+	/* Reverse the octal digits to get the correct representation */
+	for (j = i - 1; j >= 0; j--)
+	{
+		buffer[len++] = octal_digits[j];
+	}
+
+	return (i);
 }
