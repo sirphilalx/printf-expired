@@ -10,7 +10,7 @@
  * Return: the number counted
  */
 
-int print_num(va_list args)
+int print_num(va_list args, char *buffer, int *pos)
 {
 	int num = va_arg(args, int);
 	int len = 0;
@@ -18,12 +18,24 @@ int print_num(va_list args)
 
 	if (num < 0)
 	{
-		len += write(1, "-", 1);
+		if (*pos == 1023)
+		{
+			write(1, buffer, *pos);
+			*pos = 0;
+		}
+		buffer[(*pos)++] = '-';
 		num = -num;
+		len++;
 	}
 	if (num == 0)
 	{
-		len += write(1, "0", 1);
+		if (*pos == 1023)
+		{
+			write(1, buffer, *pos);
+			*pos = 0;
+		}
+		buffer[(*pos)++] = '0';
+		len++;
 	}
 	else
 	{

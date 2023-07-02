@@ -7,7 +7,7 @@
  * Return: int in hexadecomal format
  */
 
-int print_hex_upper(va_list args)
+int print_hex_upper(va_list args, char *buffer, int *pos)
 {
 	unsigned int num = va_arg(args, unsigned int);
 	int len = 0;

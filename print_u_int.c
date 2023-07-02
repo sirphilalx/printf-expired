@@ -7,7 +7,7 @@
  * Return: Number of characters printed
  */
 
-int print_unsigned_num(va_list args)
+int print_unsigned_num(va_list args, char *buffer, int *pos)
 {
 	unsigned int num = va_arg(args, unsigned int);
 	int len = 0;

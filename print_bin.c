@@ -23,7 +23,7 @@ void print_binary_recursive(unsigned int num, int *len)
  * @buffer: to store the character to be printed
  * Return: Number of characters printed
  */
-int print_binary(va_list args)
+int print_binary(va_list args, char *buffer, int *pos)
 {
 	unsigned int num = va_arg(args, unsigned int);
 	int len = 0;
