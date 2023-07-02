@@ -1,61 +1,78 @@
 #include "main.h"
 
 /**
- * _printf - the function that mimics the standard printf
- * @format: the constant variable
- * @...: the variadic elipsis
+ * _printf - Produces output according to a format.
+ * @format: The format string.
  *
- * Return: returns the integar value
+ * Return: The number of characters printed (excluding the null byte used to end output to strings).
  *
  */
 
 int _printf(const char *format, ...)
 {
-	va_list args;
-	int len = 0;
-	int i = 0;
+    va_list args;
+    int len = 0;
+    char buffer[BUFFER_SIZE] = {0};
+    int i, j;
+    print_handler_t handlers[] = {
+        {'c', print_char},
+        {'s', print_string},
+        {'d', print_integer},
+        {'i', print_integer},
+        {'u', print_unsigned},
+        {'o', print_octal},
+        {'x', print_hex_lower},
+        {'X', print_hex_upper},
+        {'b', print_binary},
+        {'S', print_string_custom},
+        {'\0', NULL}};
 
-	format_t formats[] = {
-		{'c', print_char},
-		{'s', print_string},
-		{'%', print_percent},
-		{'d', print_num},
-		{'i', print_num},
-		{'b', print_binary},
-		{'u', print_unsigned_num},
-		{'o', print_octal},
-		{'x', print_hex_lower},
-		{'X', print_hex_upper},
-		{0, '\0'}
-	};
+    va_start(args, format);
 
-	va_start(args, format);
+    for (i = 0; format[i]; i++)
+    {
+        if (format[i] == '%')
+        {
+            i++;
+            if (format[i] == '%')
+            {
+                buffer[len] = '%';
+                len++;
+            }
+            else
+            {
+                int found = 0;
+                for (j = 0; handlers[j].specifier != 0; j++)
+                {
+                    if (format[i] == handlers[j].specifier)
+                    {
+                        len += handlers[j].func(args, buffer, len);
+                        found = 1;
+                        break;
+                    }
+                }
+                if (!found)
+                {
+                    buffer[len] = '%';
+                    len++;
+                    buffer[len] = format[i];
+                    len++;
+                }
+            }
+        }
+        else
+        {
+            buffer[len] = format[i];
+            len++;
+        }
+    }
 
-	while (format && format[i])
-	{
-		if (format[i] == '%')
-		{
-			int j = 0;
+    va_end(args);
 
-			while (formats[j].specifier)
-			{
-				if (formats[j].specifier == format[i + 1])
-				{
-					len += formats[j].print_func(args);
-					i++;
-					break;
-				}
-				j++;
-			}
-		}
-		else
-		{
-			len += write(1, &format[i], 1);
-		}
-		i++;
-	}
+    for (i = 0; buffer[i]; i++)
+    {
+        _putchar(buffer[i]);
+    }
 
-	va_end(args);
-
-	return (len);
+    return len;
 }
